@@ -13,7 +13,7 @@ html {
 
 #front-textarea {
     width: 300px;
-    height: 50px;
+    height: 45px;
     margin: 0 auto;
     resize: none;
 }
@@ -74,6 +74,15 @@ img {
     border-radius: 10px;
     color: white;
     background-color: red;
+    width: 80px;
+    height: 25px;
+    margin-top: 10px;
+}
+
+.flip-btn-style {
+    border-radius: 10px;
+    color: white;
+    background-color: blue;
     width: 80px;
     height: 25px;
     margin-top: 10px;
