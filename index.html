@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Umberto Breglia">
+    <meta name="description" content="collaborative anic flashcards">
+    
+    <link rel="icon" type="image/x-icon" href="resources/images/circle-16.ico" />
+
+    <link href="styles/style.css" rel="stylesheet" />
+    <title>ANIC</title>
+    
+    <script src="scripts/main.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>ANIC Flashcards</h1>
+    </header>
+
+    <main>
+        <div class ="textarea-btn">
+            <span>Front</span>
+            <textarea id="front-textarea" type="text" required minlength="4" size="10"></textarea>
+            <span>Rear</span>
+            <textarea id="rear-textarea" type="text" required minlength="4" size="10"></textarea>
+            <button id="add-btn" class="btn-style" type="button">Add element</button>
+        </div>
+
+        <div class="flashcards-list">
+            <ul id="flashcards-list-ul">
+            </ul>
+        </div>
+
+        <footer>
+            <p class="copyright">© Umberto Breglia 2023</p>
+        </footer>
+    </main>
+
+</body>
+</html>
