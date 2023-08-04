@@ -18,53 +18,55 @@ function addTextListNode() {
 
     frontTxtStr = frontTextArea.value;
     rearTxtStr = rearTextArea.value;
-    
-    str = frontTxtStr;
 
-    // If rearTxtStr has no empty value/whitespaces
+    // If rearTxtStr has no empty value or whitespaces then add to list
     if (rearTxtStr.trim() && frontTxtStr.trim()) {
         const frontTextParagraph = document.createElement("p");
         const rearTextParagraph = document.createElement("p");
-        const ulistEntry = document.createElement("li");
         const deleteBtn = document.createElement("button");
         const flipBtn = document.createElement("button");
+        const ulistEntry = document.createElement("li");
 
+        // Replace all newlines with <br /> tags to go to the next line
         rearTxtStr.replace(/\n/g, "<br />");
         frontTxtStr.replace(/\n/g, "<br />");
 
-        deleteBtn.setAttribute("class", "remove-btn-style");
+        deleteBtn.setAttribute("class", "btn-style");
+        deleteBtn.setAttribute("id", "delete-btn");
         deleteBtn.innerText = "Remove";
         deleteBtn.addEventListener("click", function() {
             ulistEntry.remove()
         });
 
+        // Displaying the front text as the default
         frontTextParagraph.style.display = "block";
         rearTextParagraph.style.display = "none";
         
+        // Setting the text of the <p> element
         frontTextParagraph.innerHTML = frontTxtStr;
         rearTextParagraph.innerHTML = rearTxtStr;
 
-        flipBtn.setAttribute("class", "flip-btn-style");
+        flipBtn.setAttribute("class", "btn-style");
+        flipBtn.setAttribute("id", "flip-btn");
         flipBtn.innerText = "Flip";
+        // Show front or rear based on what's on the screen
         flipBtn.addEventListener("click", function() {
             if(frontTextParagraph.style.display === "none") {
-                console.log("Front should be visible");
-
                 frontTextParagraph.style.display = "block";
                 rearTextParagraph.style.display = "none";
             } else {
-                console.log("Rear should be visible");
-
                 frontTextParagraph.style.display = "none";
                 rearTextParagraph.style.display = "block";
             }
         });
 
+        // Constructing the <li> element
         ulistEntry.appendChild(frontTextParagraph);
         ulistEntry.appendChild(rearTextParagraph);
         ulistEntry.appendChild(deleteBtn);
         ulistEntry.appendChild(flipBtn);
 
+        // Appending the <li> element to the <ul> element
         ulist.appendChild(ulistEntry);
         
         frontTextArea.value = "";
