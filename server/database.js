@@ -16,8 +16,13 @@ export async function getAllFlashcards() {
     return result[0];
 }
 
-export async function createFlashcard(front, rear) {
+export async function insertFlashcard(front, rear) {
     const result = await pool.query('INSERT INTO flashcards (front, rear) VALUES (?, ?)', [front, rear]);
+    return result[0];
+}
+
+export async function deleteFlashcard(id) {
+    const result = await pool.query('DELETE FROM flashcards WHERE id = (?)', [id]);
     return result[0];
 }
 

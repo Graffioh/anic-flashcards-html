@@ -3,21 +3,29 @@ const newImg = document.getElementById("void1");
 const frontTextArea = document.getElementById("front-textarea");
 const rearTextArea = document.getElementById("rear-textarea");
 const addBtn = document.getElementById("add-btn");
+const fetchBtn = document.getElementById("fetch-btn");
 const ulist = document.getElementById("flashcards-list-ul");
 
 var str = "";
 
 // Add typed text into unordered list by tapping on btn
-addBtn.addEventListener("click", () => {
-    addTextListNode();
+addBtn.addEventListener("click", async () => {
+    await createFlashcard(frontTextArea.value, rearTextArea.value);
+    frontTextArea.value = "";
+    rearTextArea.value = "";
 });
 
-function addTextListNode() {
+function addTextListNode(front, rear, id) {
     var frontTxtStr = "";
     var rearTxtStr = "";
 
-    frontTxtStr = frontTextArea.value;
-    rearTxtStr = rearTextArea.value;
+    // if(front === "" && rear === "") {
+    //     frontTxtStr = frontTextArea.value;
+    //     rearTxtStr = rearTextArea.value;
+    // } else {
+        frontTxtStr = front;
+        rearTxtStr = rear;
+    // }
 
     // If rearTxtStr has no empty value or whitespaces then add to list
     if (rearTxtStr.trim() && frontTxtStr.trim()) {
@@ -34,8 +42,8 @@ function addTextListNode() {
         deleteBtn.setAttribute("class", "btn-style");
         deleteBtn.setAttribute("id", "delete-btn");
         deleteBtn.innerText = "Remove";
-        deleteBtn.addEventListener("click", function() {
-            ulistEntry.remove()
+        deleteBtn.addEventListener("click", async () => {
+            await removeFlashcard(id, ulistEntry);
         });
 
         // Displaying the front text as the default
@@ -50,7 +58,7 @@ function addTextListNode() {
         flipBtn.setAttribute("id", "flip-btn");
         flipBtn.innerText = "Flip";
         // Show front or rear based on what's on the screen
-        flipBtn.addEventListener("click", function() {
+        flipBtn.addEventListener("click", () => {
             if(frontTextParagraph.style.display === "none") {
                 frontTextParagraph.style.display = "block";
                 rearTextParagraph.style.display = "none";
@@ -76,10 +84,37 @@ function addTextListNode() {
     }
 }
 
-function removeTextListNode() {
-    if(ulist.childElementCount > 1 && rearTextArea.value === "") {
-        ulist.removeChild(ulist.lastChild);
-    } else {
-        return;
+fetchBtn.addEventListener("click", async () => {
+    const cards = await fetchAllFlashcards();
+
+    for(let i = 0; i < cards.length; ++i) {
+        addTextListNode(cards[i].front, cards[i].rear, cards[i].id);
     }
+});
+
+async function fetchAllFlashcards() {
+    const response = await fetch('http://localhost:8080/flashcards');
+    const cards = await response.json();
+    return cards;
+}
+
+async function createFlashcard(front, rear) {
+    const response = await fetch('http://localhost:8080/flashcards', {
+        method: 'POST',
+        body: JSON.stringify({
+            front: front,
+            rear: rear
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+}
+
+async function removeFlashcard(id, ulistEntry) {
+    ulistEntry.remove()
+
+    const response = await fetch('http://localhost:8080/flashcards/' + id, {
+        method: 'DELETE',
+      })
 }
