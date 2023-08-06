@@ -6,13 +6,15 @@ const addBtn = document.getElementById("add-btn");
 const fetchBtn = document.getElementById("fetch-btn");
 const ulist = document.getElementById("flashcards-list-ul");
 
-var str = "";
+var fetchedCardsCount = 0
 
 // Add typed text into unordered list by tapping on btn
 addBtn.addEventListener("click", async () => {
     await createFlashcard(frontTextArea.value, rearTextArea.value);
     frontTextArea.value = "";
     rearTextArea.value = "";
+
+    await populateFlashcardList();
 });
 
 function addTextListNode(front, rear, id) {
@@ -85,11 +87,7 @@ function addTextListNode(front, rear, id) {
 }
 
 fetchBtn.addEventListener("click", async () => {
-    const cards = await fetchAllFlashcards();
-
-    for(let i = 0; i < cards.length; ++i) {
-        addTextListNode(cards[i].front, cards[i].rear, cards[i].id);
-    }
+    await populateFlashcardList();
 });
 
 async function fetchAllFlashcards() {
@@ -117,4 +115,13 @@ async function removeFlashcard(id, ulistEntry) {
     const response = await fetch('http://localhost:8080/flashcards/' + id, {
         method: 'DELETE',
       })
+}
+
+async function populateFlashcardList() {
+    const cards = await fetchAllFlashcards();
+
+    for(let i = fetchedCardsCount; i < cards.length; ++i) {
+        addTextListNode(cards[i].front, cards[i].rear, cards[i].id);
+        fetchedCardsCount++;
+    }
 }
